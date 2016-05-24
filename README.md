@@ -1,4 +1,3 @@
-UniFi
-=====
+# UniFi Controller
 
-Docker for UniFi 4.x (Ubiquiti Networks)
+Docker for UniFi Controller (Ubiquiti Networks)
