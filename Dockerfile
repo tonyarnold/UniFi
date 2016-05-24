@@ -45,10 +45,9 @@ RUN apt-get -y install jsvc
 RUN curl -L -o unifi_sysvinit_all.deb https://www.ubnt.com/downloads/unifi/5.0.3-f92cb0fc/unifi_sysvinit_all.deb
 RUN dpkg --install unifi_sysvinit_all.deb
 
-RUN ln -s /var/lib/unifi /usr/lib/unifi/data
 EXPOSE 8080/tcp 8081/tcp 8443/tcp 8843/tcp 8880/tcp 3478/udp
 
-VOLUME ["/var/lib/unifi", "/var/log/unifi", "/var/run/unifi", "/usr/lib/unifi/work"]
+VOLUME ["/var/lib/unifi", "/var/log/unifi", "/var/run/unifi"]
 
 WORKDIR /var/lib/unifi
 
