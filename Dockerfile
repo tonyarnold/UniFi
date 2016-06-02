@@ -1,5 +1,5 @@
 FROM phusion/baseimage:0.9.18
-MAINTAINER pducharme@me.com
+MAINTAINER tony@thecocoabots.com
 # Set correct environment variables
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
