@@ -31,12 +31,12 @@ ADD https://www.ubnt.com/downloads/unifi/5.0.7-1d8af2d8/unifi_sysvinit_all.deb /
 RUN dpkg -i /tmp/unifi_sysvinit_all.deb && rm /tmp/unifi_sysvinit_all.deb
 
 # Wipe out auto-generated data
-RUN rm -rf /var/lib/unifi/*
+RUN rm -rf /usr/lib/unifi/data
 
 # Expose ports, and set working directory
 EXPOSE 3478/udp 8080/tcp 8081/tcp 8443/tcp 8843/tcp 8880/tcp
-VOLUME /var/lib/unifi
-WORKDIR /var/lib/unifi
+VOLUME /usr/lib/unifi/data
+WORKDIR /usr/lib/unifi/data
 
 # Start the UniFi controller process
 ENTRYPOINT ["/usr/lib/jvm/java-8-oracle/jre/bin/java", "-Xmx1024M", "-jar", "/usr/lib/unifi/lib/ace.jar"]
