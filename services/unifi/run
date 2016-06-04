@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Starting Unifi Controller."
+/etc/init.d/unifi start
