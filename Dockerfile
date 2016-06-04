@@ -8,13 +8,22 @@ RUN echo "deb http://www.ubnt.com/downloads/unifi/debian unifi5 ubiquiti" > \
   /etc/apt/sources.list.d/20ubiquiti.list && \
   echo "deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen" > \
   /etc/apt/sources.list.d/21mongodb.list && \
+  echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" > \
+  /etc/apt/sources.list.d/22webupd8team-java.list && \
+  echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" > \
+  /etc/apt/sources.list.d/23webupd8team-java-src.list && \
   apt-key adv --keyserver keyserver.ubuntu.com --recv C0A52C50 && \
-  apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+  apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10 && \
+  apt-key adv --keyserver keyserver.ubuntu.com --recv EEA14886
 
 RUN apt-get -q update && \
-  apt-get install -qy --force-yes wget unifi && \
+  apt-get install -qy --force-yes oracle-java8-installer oracle-java8-set-default unifi && \
   apt-get -q clean && \
   rm -rf /var/lib/apt/lists/*
+
+RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+ENV JAVA8_HOME /usr/lib/jvm/java-8-oracle
 
 # Install beta version of controller software
 ADD https://www.ubnt.com/downloads/unifi/5.0.7-1d8af2d8/unifi_sysvinit_all.deb /tmp/unifi_sysvinit_all.deb
@@ -29,5 +38,5 @@ VOLUME /var/lib/unifi
 WORKDIR /var/lib/unifi
 
 # Start the UniFi controller process
-ENTRYPOINT ["/usr/bin/java", "-Xmx1024M", "-jar", "/usr/lib/unifi/lib/ace.jar"]
+ENTRYPOINT ["/usr/lib/jvm/java-8-oracle/jre/bin/java", "-Xmx1024M", "-jar", "/usr/lib/unifi/lib/ace.jar"]
 CMD ["start"]
