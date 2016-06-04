@@ -16,12 +16,13 @@ RUN echo "deb http://www.ubnt.com/downloads/unifi/debian unifi5 ubiquiti" > \
   apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10 && \
   apt-key adv --keyserver keyserver.ubuntu.com --recv EEA14886
 
+RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+
 RUN apt-get -q update && \
   apt-get install -qy --force-yes oracle-java8-installer oracle-java8-set-default unifi && \
   apt-get -q clean && \
   rm -rf /var/lib/apt/lists/*
 
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 ENV JAVA8_HOME /usr/lib/jvm/java-8-oracle
 
