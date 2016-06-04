@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# opt out for autoupdates
-[ "$ADVANCED_DISABLEUPDATES" ] && exit 0
-
 export DEBIAN_FRONTEND=noninteractive
 
 if [[ $UNIFI_URL ]]; then
