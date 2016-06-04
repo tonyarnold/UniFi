@@ -10,9 +10,6 @@ Docker container for [UniFi Controller](https://www.ubnt.com/enterprise/software
 docker run --restart=always -d \
            --name=unifi \
            --net=host \
-           -v $PATH_TO_UNIFI_DIR/data:/var/lib/unifi \
-           -v $PATH_TO_UNIFI_DIR/logs:/var/log/unifi \
-           -v $PATH_TO_UNIFI_DIR/run:/var/run/unifi \
-           -v $PATH_TO_UNIFI_DIR/work:/usr/lib/unifi/work \
+           -v $PATH_TO_UNIFI_DIR:/var/lib/unifi \
            tonyarnold/unifi
 ```
