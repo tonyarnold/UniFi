@@ -18,6 +18,7 @@ RUN apt-get -q update && \
   rm -rf /var/lib/apt/lists/*
 
 COPY init/ /etc/init.d/
+RUN chmod -v +x /etc/init.d/*.sh
 RUN ln -s /var/lib/unifi /usr/lib/unifi/data
 EXPOSE 8080/tcp 8081/tcp 8443/tcp 8843/tcp 8880/tcp 3478/udp
 
