@@ -16,11 +16,12 @@ RUN apt-get -q update && \
   apt-get -q clean && \
   rm -rf /var/lib/apt/lists/*
 
-RUN ln -s /var/lib/unifi /usr/lib/unifi/data
-
 # Install beta version of controller software
 ADD https://www.ubnt.com/downloads/unifi/5.0.7-1d8af2d8/unifi_sysvinit_all.deb /tmp/unifi_sysvinit_all.deb
 RUN dpkg -i /tmp/unifi_sysvinit_all.deb && rm /tmp/unifi_sysvinit_all.deb
+
+RUN rm -r /usr/lib/unifi/data && \
+  ln -s /var/lib/unifi /usr/lib/unifi/data
 
 # Expose ports, volumes, etc
 EXPOSE 8080/tcp 8081/tcp 8443/tcp 8843/tcp 8880/tcp 3478/udp
