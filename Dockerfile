@@ -27,7 +27,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 ENV JAVA8_HOME /usr/lib/jvm/java-8-oracle
 
 # Install beta version of controller software
-ADD https://www.ubnt.com/downloads/unifi/5.6.2-224554000b/unifi_sysvinit_all.deb /tmp/unifi_sysvinit_all.deb
+ADD https://www.ubnt.com/downloads/unifi/5.6.3-bed25ecf6c/unifi_sysvinit_all.deb /tmp/unifi_sysvinit_all.deb
 RUN dpkg -i /tmp/unifi_sysvinit_all.deb && rm /tmp/unifi_sysvinit_all.deb
 
 # Wipe out auto-generated data
