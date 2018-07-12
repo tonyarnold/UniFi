@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM alpine:latest
 MAINTAINER Tony Arnold <tony@thecocoabots.com>
 
 ENV DEBIAN_FRONTEND noninteractive
