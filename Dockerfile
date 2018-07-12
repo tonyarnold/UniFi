@@ -19,7 +19,7 @@ RUN echo "deb http://www.ubnt.com/downloads/unifi/debian unifi5 ubiquiti" > \
 RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 
 RUN apt-get -q update && \
-  apt-get install -qy --force-yes oracle-java8-installer oracle-java8-set-default unifi && \
+  apt-get install -qy --force-yes oracle-java8-installer oracle-java8-set-default curl unifi && \
   apt-get -q clean && \
   rm -rf /var/lib/apt/lists/*
 
