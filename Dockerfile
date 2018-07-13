@@ -1,25 +1,35 @@
-FROM alpine:latest
-MAINTAINER Tony Arnold <tony@thecocoabots.com>
+FROM ubuntu:bionic
+LABEL maintainer="Tony Arnold <tony@thecocoabots.com>"
 
-ENV DEBIAN_FRONTEND noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
+
+ENV UBUNTU_CODENAME=bionic
+ENV PKGURL=https://dl.ubnt.com/unifi/5.9.12-ZD3vz8Yw57I/unifi_sysvinit_all.deb
+ENV MONGODB_VERSION=3.4
+ENV MONGODB_UBUNTU=xenial
+ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
+
+RUN apt-get -q update && \
+  apt-get install -qy gnupg wget curl && \
+  apt-get -q clean
 
 # Update and install the required software
-RUN echo "deb http://www.ubnt.com/downloads/unifi/debian unifi5 ubiquiti" > \
+RUN echo "deb https://www.ubnt.com/downloads/unifi/debian unifi5 ubiquiti" > \
   /etc/apt/sources.list.d/20ubiquiti.list && \
-  echo "deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen" > \
-  /etc/apt/sources.list.d/21mongodb.list && \
-  echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" > \
+  echo "deb https://repo.mongodb.org/apt/ubuntu ${MONGODB_UBUNTU}/mongodb-org/${MONGODB_VERSION} multiverse" > \
+  /etc/apt/sources.list.d/21mongodb-org-${MONGODB_VERSION}.list && \
+  echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu ${UBUNTU_CODENAME} main" > \
   /etc/apt/sources.list.d/22webupd8team-java.list && \
-  echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" > \
+  echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu ${UBUNTU_CODENAME} main" > \
   /etc/apt/sources.list.d/23webupd8team-java-src.list && \
   apt-key adv --keyserver keyserver.ubuntu.com --recv C0A52C50 && \
-  apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10 && \
-  apt-key adv --keyserver keyserver.ubuntu.com --recv EEA14886
+  apt-key adv --keyserver keyserver.ubuntu.com --recv EEA14886 && \
+  wget -qO- https://www.mongodb.org/static/pgp/server-${MONGODB_VERSION}.asc | apt-key add
 
 RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 
 RUN apt-get -q update && \
-  apt-get install -qy --force-yes oracle-java8-installer oracle-java8-set-default curl unifi && \
+  apt-get --allow-unauthenticated install -qy oracle-java8-installer oracle-java8-set-default unifi && \
   apt-get -q clean && \
   rm -rf /var/lib/apt/lists/*
 
@@ -27,7 +37,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 ENV JAVA8_HOME /usr/lib/jvm/java-8-oracle
 
 # Install beta version of controller software
-ADD https://dl.ubnt.com/unifi/5.9.12-ZD3vz8Yw57I/unifi_sysvinit_all.deb /tmp/unifi_sysvinit_all.deb
+ADD "${PKGURL}" /tmp/unifi_sysvinit_all.deb
 RUN dpkg -i /tmp/unifi_sysvinit_all.deb && rm /tmp/unifi_sysvinit_all.deb
 
 # Wipe out auto-generated data
