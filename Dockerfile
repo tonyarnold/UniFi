@@ -4,7 +4,7 @@ LABEL maintainer="Tony Arnold <tony@thecocoabots.com>"
 ARG DEBIAN_FRONTEND=noninteractive
 
 ENV UBUNTU_CODENAME=bionic
-ENV PKGURL=https://dl.ubnt.com/unifi/5.10.12-20644d4901/unifi_sysvinit_all.deb
+ENV PKGURL=https://dl.ubnt.com/unifi/5.10.17/unifi_sysvinit_all.deb
 ENV MONGODB_VERSION=3.4
 ENV MONGODB_UBUNTU=xenial
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
