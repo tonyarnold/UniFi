@@ -1,37 +1,22 @@
-FROM ubuntu:bionic
+FROM alpine:3.7
 LABEL maintainer="Tony Arnold <tony@thecocoabots.com>"
 
-ARG DEBIAN_FRONTEND=noninteractive
+ENV PKGURL=https://dl.ubnt.com/unifi/5.11.18-996baf2ca5/UniFi.unix.zip
 
-ENV UBUNTU_CODENAME=bionic
-ENV PKGURL=https://dl.ubnt.com/unifi/5.11.18-996baf2ca5/unifi_sysvinit_all.deb
-ENV MONGODB_VERSION=3.4
-ENV MONGODB_UBUNTU=xenial
-ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
+RUN apk add --no-cache mongodb~=3.4
+RUN apk add --no-cache openjdk8
+RUN apk add --no-cache unzip
 
-RUN apt-get -q update && \
-  apt-get install -qy gnupg wget curl && \
-  apt-get -q clean
-
-# Update and install the required software
-RUN echo "deb http://www.ui.com/downloads/unifi/debian stable ubiquiti" > \
-  /etc/apt/sources.list.d/20-ubnt-unifi.list && \
-  echo "deb https://repo.mongodb.org/apt/ubuntu ${MONGODB_UBUNTU}/mongodb-org/${MONGODB_VERSION} multiverse" > \
-  /etc/apt/sources.list.d/21-mongodb-org-${MONGODB_VERSION}.list && \
-  apt-key adv --keyserver keyserver.ubuntu.com --recv C0A52C50 && \
-  wget -qO- https://www.mongodb.org/static/pgp/server-${MONGODB_VERSION}.asc | apt-key add
-
-RUN apt-get -q update && \
-  apt-get --allow-unauthenticated install -qy openjdk-8-jdk openjdk-8-jre unifi && \
-  apt-get -q clean && \
-  rm -rf /var/lib/apt/lists/*
-
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-ENV JAVA8_HOME /usr/lib/jvm/java-8-openjdk-amd64
+ENV JAVA_HOME /usr/lib/jvm/default-jvm
+ENV JAVA8_HOME /usr/lib/jvm/default-jvm
 
 # Install beta version of controller software
-ADD "${PKGURL}" /tmp/unifi_sysvinit_all.deb
-RUN dpkg -i /tmp/unifi_sysvinit_all.deb && rm /tmp/unifi_sysvinit_all.deb
+ADD "${PKGURL}" /tmp/UniFi.unix.zip
+WORKDIR /usr/lib/
+RUN unzip /tmp/UniFi.unix.zip
+RUN mv UniFi unifi
+RUN rm /usr/lib/unifi/bin/mongod
+RUN ln -s /usr/bin/mongod /usr/lib/unifi/bin/mongod
 
 # Wipe out auto-generated data
 RUN rm -rf /usr/lib/unifi/data
@@ -42,5 +27,5 @@ VOLUME /usr/lib/unifi/data
 WORKDIR /usr/lib/unifi/data
 
 # Start the UniFi controller process
-ENTRYPOINT ["/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java", "-Xmx1024M", "-jar", "/usr/lib/unifi/lib/ace.jar"]
+ENTRYPOINT ["/usr/lib/jvm/default-jvm/jre/bin/java", "-Xmx1024M", "-jar", "/usr/lib/unifi/lib/ace.jar"]
 CMD ["start"]
