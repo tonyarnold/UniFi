@@ -51,7 +51,7 @@ ENV JAVA_HOME /usr/lib/jvm/default-jvm
 ENV JAVA8_HOME /usr/lib/jvm/default-jvm
 
 # Install beta version of controller software
-ADD "https://dl.ubnt.com/unifi/5.11.18-996baf2ca5/UniFi.unix.zip" /tmp/UniFi.unix.zip
+ADD "https://dl.ui.com/unifi/5.11.26-1ecdee774d/unifi_sysvinit_all.deb" /tmp/UniFi.unix.zip
 WORKDIR /usr/lib/
 RUN unzip /tmp/UniFi.unix.zip
 RUN mv UniFi unifi
